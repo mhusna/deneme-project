@@ -1,7 +1,3 @@
 {
-  "outputDirectory": "dist",
-  "routes": [
-    { "src": "/api/socket", "dest": "/api/socket.js" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
+  "outputDirectory": "dist"
 }
