@@ -5,7 +5,11 @@ export default function handler(req, res) {
     const io = new Server(res.socket.server, {
       path: "/api/socket",
       cors: {
-        origin: "https://deneme-project.vercel.app"
+        origin: [
+          "https://deneme-project.vercel.app",
+          "https://deneme-project-git-main-husnas-projects.vercel.app"
+        ],
+        methods: ["GET", "POST"]
       }
     });
 
@@ -14,13 +18,18 @@ export default function handler(req, res) {
     io.on("connection", (socket) => {
       console.log("Kullanıcı bağlandı:", socket.id);
 
-      // HER 2 SANİYEDE BİR MESAJ GÖNDER
-      setInterval(() => {
+      // Sürekli veri gönder (test için)
+      const interval = setInterval(() => {
         socket.emit("price", {
           time: new Date().toLocaleTimeString(),
           value: Math.random() * 100
         });
       }, 2000);
+
+      socket.on("disconnect", () => {
+        clearInterval(interval);
+        console.log("Kullanıcı ayrıldı:", socket.id);
+      });
     });
   }
 
